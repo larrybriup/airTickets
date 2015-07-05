@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+	      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	      xsi:schemaLocation="..."
+	      version="1.0">
+	<tlib-version>1.0</tlib-version>
+	<jsp-version>1.0</jsp-version>
+	<short-name>AirTickets</short-name>
+<tag>
+	<name>login</name>
+	<tag-class>com.briup.taglib.LoginTag</tag-class>
+	<body-content>EMPTY</body-content>
+	<attribute>
+		<name>imgurl</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+		<type>java.lang.String</type>
+	</attribute>
+	<attribute>
+		<name>event</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+		<type>java.lang.String</type>
+	</attribute>
+</tag>
+</taglib>
+		
