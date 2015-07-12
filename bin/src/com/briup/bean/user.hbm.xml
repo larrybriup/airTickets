@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.briup.bean">
+	<class name="com.briup.bean.User" table="a_users">
+		<id name="userid" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="userName" column="account_no" unique="true" not-null="true"></property>
+		<property name="name" unique="true" not-null="true"></property>
+		<property name="password" not-null="true"></property>
+		<property name="gender"></property>
+		<property name="cid" column="identity_card" unique="true" not-null="true"></property>
+        <property name="telnum" column="phone"></property>
+        <property name="email"></property>
+        <property name="address"></property>
+	</class>
+</hibernate-mapping>

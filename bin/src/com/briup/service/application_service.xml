@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		    xmlns:aop="http://www.springframework.org/schema/aop"
+		    xmlns:context="http://www.springframework.org/schema/context"
+		    xmlns:tx="http://www.springframework.org/schema/tx"
+		    xsi:schemaLocation="
+   http://www.springframework.org/schema/beans 
+   http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+   http://www.springframework.org/schema/context 
+   http://www.springframework.org/schema/context/spring-context-3.2.xsd
+   http://www.springframework.org/schema/aop 
+   http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+   http://www.springframework.org/schema/tx 
+   http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+   <!-- spring ioc -->
+	<bean name="user" class="com.briup.bean.User">
+		<property name="userid" value="1"></property>
+		<property name="userName" value="chiango"></property>
+		<property name="password" value="123456"></property>
+		<property name="repassword" value="123456"></property>
+		<property name="name" value="choda"></property>
+		<property name="gender" value="true"></property>
+		<property name="cid" value="4227221999334334"></property>
+		<property name="telnum" value="13382104244"></property>
+		<property name="email" value="929880288@qq.com"></property>
+		<property name="address" value="上海"></property>
+	</bean>
+	<bean name="userDao" class="com.briup.dao.impl.UserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean name="userService" class="com.briup.service.impl.UserServiceImpl">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	<bean name="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<!-- <prop key="hibernate.current_session_context_class">thread</prop> -->
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/briup/bean/user.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+   <bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
+		destroy-method="close">
+		<property name="driverClassName"><value>oracle.jdbc.driver.OracleDriver</value></property>
+		<property name="url"><value>jdbc:oracle:thin:@localhost:1521:xe</value></property>
+		<property name="username"><value>ex</value></property>
+		<property name="password"><value>ex</value></property>
+		<property name="maxActive"><value>80</value></property> 
+	    <property name="maxIdle"><value>20</value></property> 
+	    <property name="maxWait"><value>3000</value></property> 
+	</bean> 
+	<bean name="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- spring aop -->
+	<tx:advice id="myAdvise" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED"/>
+			<tx:method name="modify*" propagation="REQUIRED"/>
+			<!-- <tx:method name="getUser*" propagation="REQUIRED"/> -->
+			<tx:method name="remove*" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut expression="execution(* com.briup.service..*.*(..))" 
+		id="myPointCut"/>
+		<aop:advisor advice-ref="myAdvise" pointcut-ref="myPointCut"/>
+	</aop:config>
+</beans>
